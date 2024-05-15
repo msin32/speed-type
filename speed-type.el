@@ -97,12 +97,19 @@ E.g. if you always want lowercase words, set:
                  (const :tag "French" French)
                  (const :tag "Dutch" Dutch)))
 
-(defcustom speed-type-replace-strings '(("“" . "\"") ("”" . "\"") ("‘" . "'") ("’" . "'") ("—" . "-") ("æ" . "ae") ("œ" . "oe"))
+(defcustom speed-type-replace-strings '(("“" . "\"") ("”" . "\"") ("‘" . "'") ("’" . "'") ("—" . "-"))
   "Alist of strings to replace and their replacement, in the form:
 `(bad-string . good-string)'
 To remove without replacement, use the form: `(bad-string . \"\")'"
   :type '(alist :key-type string :value-type string))
 
+(defcustom speed-type-replace-string-optional '(("æ" . "ae") ("œ" . "oe") ("á" . "a") ("é" . "e") ("í" . "i") ("ó" . "o") ("ú" . "u") ("ü" . "u") ("ñ" . "n"))
+  "Alist of strings to replace and their replacement, in the form:
+`(bad-string . good-string)'
+To remove without replacement, use the form: `(bad-string . \"\")'
+These chars may be wanted for an extra challenge composing characters."
+  :type '(alist :key-type string :value-type string))
+	
 (defface speed-type-default
   '()
   "Default face for `speed-type'."
@@ -425,7 +432,7 @@ Replacements are found in `speed-type-replace-strings'."
       (car string-pair)
       (cdr string-pair)
       acc-text))
-   speed-type-replace-strings
+   (append speed-type-replace-strings speed-type-replace-strings-optional)
    :initial-value text))
 
 (cl-defun speed-type--setup
