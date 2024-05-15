@@ -32,6 +32,11 @@ speed-type can be customized using:
 M-x customize-group speed-type RET
 ```
 
+you may also want to increase the text scale in `speed-type-mode`:
+```
+(add-hook 'speed-type-mode-hook (lambda () (text-scale-increase 3)))
+```
+
 ## Running speed-type
 
 Executing `M-x speed-type-text` will start the typing exercise. A new buffer will
