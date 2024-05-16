@@ -103,7 +103,7 @@ E.g. if you always want lowercase words, set:
 To remove without replacement, use the form: `(bad-string . \"\")'"
   :type '(alist :key-type string :value-type string))
 
-(defcustom speed-type-replace-strings-optional '(("æ" . "ae") ("œ" . "oe") ("á" . "a") ("é" . "e") ("í" . "i") ("ó" . "o") ("ú" . "u") ("ü" . "u") ("ñ" . "n"))
+(defcustom speed-type-replace-strings-optional '(("á" . "a") ("æ" . "ae") ("Æ" . "AE") ("é" . "e") ("í" . "i") ("ó" . "o") ("œ" . "oe") ("ú" . "u") ("ü" . "u") ("ñ" . "n"))
   "Alist of strings to replace and their replacement, in the form:
 `(bad-string . good-string)'
 To remove without replacement, use the form: `(bad-string . \"\")'
