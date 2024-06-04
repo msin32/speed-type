@@ -364,7 +364,7 @@ Accuracy is computed as (CORRECT-ENTRIES - CORRECTIONS) / TOTAL-ENTRIES."
                   (propertize "q" 'face 'highlight)))
   (insert (format "    [%s]eplay this sample\n"
                   (propertize "r" 'face 'highlight)))
-  (when speed-type--go-next-fn (insert (format "    [%s]ext random sample\n"
+  (when speed-type--go-next-fn (insert (format "    [%s]ext sample\n"
                                                (propertize "n" 'face 'highlight))))
   (let ((view-read-only nil))
     (read-only-mode))
@@ -623,11 +623,15 @@ been completed."
 (defun speed-type-region (start end)
   "Open copy of [START,END] in a new buffer to speed type the text."
   (interactive "r")
-  (if (derived-mode-p 'prog-mode)
+  (let* ((buf (current-buffer))
+	 (diff (max (- end start) 10)) ;size of old region (min size of 10)
+	 (new-end (progn (goto-char (+ end diff)) (line-end-position))) ;move cursor to make next region
+	 (next-fn `(lambda () (with-current-buffer ,buf (speed-type-region ,end ,new-end)))))
+    (if (derived-mode-p 'prog-mode)
       (speed-type--code-with-highlighting (buffer-substring-no-properties start end)
                                           (syntax-table)
                                           font-lock-defaults)
-    (speed-type--setup (buffer-substring-no-properties start end))))
+    (speed-type--setup (buffer-substring-no-properties start end) :go-next-fn next-fn))))
 
 ;;;###autoload
 (defun speed-type-buffer (full)
