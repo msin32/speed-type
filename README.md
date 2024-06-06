@@ -64,6 +64,23 @@ the selected region.
 `speed-type-top-x` (or -100/-1000) lets you practice the top X words
 for the selected language.
 
+### Reading PDFs using speed-type
+File must first be converted to text and processed to remove unwanted spaces and characters:
+```
+;;Requires pandoc
+(defun speedtype-open-pdf-txt (arg)
+  "Open PDF file ARG as a txt file and clean text for speed-type, txt is stored in same dir."
+    (interactive "fpdf: ")
+    (shell-command
+     (format (concat "pdftotext " (replace-regexp-in-string " " "?\ " arg) " -layout")))
+    (let ((result (replace-regexp-in-string "pdf" "txt" arg)))
+      (f-write-text (replace-regexp-in-string "" "" (with-temp-buffer (insert-file-contents result) (buffer-string))) 'utf-8 result);remove ^L control char
+      (f-write-text (remove-excess-spaces (with-temp-buffer (insert-file-contents result) (buffer-string))) 'utf-8 result);remove excess spaces
+      (f-write-text (remove-empty-lines   (with-temp-buffer (insert-file-contents result) (buffer-string))) 'utf-8 result)
+      (find-file result)))
+```
+use `speed-type-region` on section of text, [n] key will move to next section.
+
 [melpa-link]: https://melpa.org/#/speed-type
 [melpa-stable-link]: https://stable.melpa.org/#/speed-type
 [melpa-badge]: https://melpa.org/packages/speed-type-badge.svg
