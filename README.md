@@ -67,7 +67,7 @@ for the selected language.
 ### Reading PDFs using speed-type
 File must first be converted to text and processed to remove unwanted spaces and characters:
 ```
-;;Requires pandoc
+;;Requires poppler
 (defun speedtype-open-pdf-txt (arg)
   "Open PDF file ARG as a txt file and clean text for speed-type, txt is stored in same dir."
     (interactive "fpdf: ")
